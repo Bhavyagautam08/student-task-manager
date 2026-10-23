@@ -1,0 +1,47 @@
+# ============================================================
+# docker-compose.yml - Student Task Manager
+# Module 4 - Practical 2: Dockerization & Cloud Deployment
+# ============================================================
+# Usage:
+#   docker-compose up --build    (build and start)
+#   docker-compose down          (stop and remove containers)
+#   docker-compose logs -f       (view logs)
+# ============================================================
+
+version: '3.9'
+
+services:
+  # ---- Task Manager App ----
+  taskmanager:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: taskflow-app
+    image: taskflow:latest
+    ports:
+      - "3000:3000"       # Host port : Container port
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    volumes:
+      - task_data:/app/data   # Persistent storage for tasks.json
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - taskflow-network
+
+# ---- Volumes ----
+volumes:
+  task_data:
+    driver: local
+
+# ---- Networks ----
+networks:
+  taskflow-network:
+    driver: bridge
