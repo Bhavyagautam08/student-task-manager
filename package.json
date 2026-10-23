@@ -1,0 +1,34 @@
+{
+  "name": "student-task-manager",
+  "version": "1.0.0",
+  "description": "Student Task Management Web Application - Module 4 Practical 2 - Dockerization & Cloud Deployment",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "docker:build": "docker build -t taskflow:latest .",
+    "docker:run": "docker run -d -p 3000:3000 --name taskflow-app taskflow:latest",
+    "docker:stop": "docker stop taskflow-app && docker rm taskflow-app",
+    "docker:compose:up": "docker-compose up --build -d",
+    "docker:compose:down": "docker-compose down",
+    "docker:logs": "docker logs -f taskflow-app"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "docker",
+    "rest-api",
+    "task-management",
+    "student"
+  ],
+  "author": "Bhavya",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "uuid": "^11.1.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
